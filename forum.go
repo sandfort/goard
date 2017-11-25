@@ -6,6 +6,7 @@ import (
 )
 
 type Post struct {
+	Title string
 	Body string
 }
 
@@ -30,8 +31,9 @@ func newHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func saveHandler(w http.ResponseWriter, r *http.Request) {
+	title := r.FormValue("title")
 	body := r.FormValue("body")
-	post = &Post{Body: body}
+	post = &Post{Title: title, Body: body}
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
