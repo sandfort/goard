@@ -1,14 +1,19 @@
 package main
 
 import (
-	"fmt"
+	"html/template"
 	"net/http"
 )
 
-var body = "Nothing to see here"
+type Post struct {
+	Body string
+}
+
+var post = &Post{Body: "Nothing to see here"}
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "<p>%s</p>", body)
+	t, _ := template.ParseFiles("index.html")
+	t.Execute(w, post)
 }
 
 func main() {
