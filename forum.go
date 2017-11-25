@@ -29,8 +29,15 @@ func newHandler(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, &Post{})
 }
 
+func saveHandler(w http.ResponseWriter, r *http.Request) {
+	body := r.FormValue("body")
+	post = &Post{Body: body}
+	http.Redirect(w, r, "/", http.StatusFound)
+}
+
 func main() {
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/new", newHandler)
+	http.HandleFunc("/save", saveHandler)
 	http.ListenAndServe(":8080", nil)
 }
