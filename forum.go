@@ -10,7 +10,7 @@ type Post struct {
 	Body string
 }
 
-var post = &Post{Body: "Nothing to see here"}
+var posts []Post
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("index.html")
@@ -18,7 +18,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	t.Execute(w, post)
+	t.Execute(w, posts)
 }
 
 func newHandler(w http.ResponseWriter, r *http.Request) {
@@ -27,13 +27,13 @@ func newHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	t.Execute(w, &Post{})
+	t.Execute(w, nil)
 }
 
 func saveHandler(w http.ResponseWriter, r *http.Request) {
 	title := r.FormValue("title")
 	body := r.FormValue("body")
-	post = &Post{Title: title, Body: body}
+	posts = append(posts, Post{Title: title, Body: body})
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 

@@ -7,8 +7,12 @@
 
 <body>
   <h1>Welcome to Goard</h1>
-  <h2>{{.Title}}</h2>
-  <p>{{.Body}}</p>
+  {{ range . }}
+  <h2>{{ .Title }}</h2>
+  <p>{{ .Body }}</p>
+  {{ else }}
+  <p>no posts</p>
+  {{ end }}
   <a href="/new">New Post</a>
 </body>
 
