@@ -7,13 +7,14 @@
 
 <body>
   <h1>Welcome to Goard</h1>
-  {{ range . }}
-  <h2>{{ .Title }}</h2>
-  <p>{{ .Body }}</p>
-  {{ else }}
-  <p>no posts</p>
-  {{ end }}
-  <a href="/new">New Post</a>
+  <ul>
+    {{ range $index, $element := . }}
+    <li><a href="/posts/{{ $index }}">{{ $element.Title }}</a></li>
+    {{ else }}
+    <li>no posts</li>
+    {{ end }}
+  </ul>
+  <a href="/posts/new">New Post</a>
 </body>
 
 </html>
