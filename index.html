@@ -9,7 +9,7 @@
   <h1>Welcome to Goard</h1>
   <ul>
     {{ range $index, $element := . }}
-    <li><a href="/posts/{{ $index }}">{{ $element.Title }}</a></li>
+    <li><a href="/posts/{{ $element.Id }}">{{ $element.Title }}</a></li>
     {{ else }}
     <li>no posts</li>
     {{ end }}
