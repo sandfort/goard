@@ -4,7 +4,10 @@ import "testing"
 
 func TestCreateAndReadPost(t *testing.T) {
 	store := NewMemoryStore()
-	id := store.CreatePost(Post{Title: "yo", Body: "the body of the post"})
+	id := store.CreatePost(Post{
+		Title: "yo",
+		Body:  "the body of the post",
+	})
 	result, _ := store.ReadPost(id)
 
 	if result.Title != "yo" || result.Body != "the body of the post" {
