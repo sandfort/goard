@@ -1,17 +1,21 @@
-package main
+package web
 
 import (
+	"github.com/sandfort/goard/core"
 	"html/template"
 	"net/http"
 	"strconv"
-	"github.com/sandfort/goard/posts"
 )
 
-type controller struct {
-	store postStore
+func NewPostController(store core.PostStore) *controller {
+	return &controller{store: store}
 }
 
-func (c *controller) handler(w http.ResponseWriter, r *http.Request) {
+type controller struct {
+	store core.PostStore
+}
+
+func (c *controller) Handler(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("index.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -21,7 +25,7 @@ func (c *controller) handler(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, posts)
 }
 
-func (c *controller) newHandler(w http.ResponseWriter, r *http.Request) {
+func (c *controller) NewHandler(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("new.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -30,14 +34,14 @@ func (c *controller) newHandler(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, nil)
 }
 
-func (c *controller) saveHandler(w http.ResponseWriter, r *http.Request) {
+func (c *controller) SaveHandler(w http.ResponseWriter, r *http.Request) {
 	title := r.FormValue("title")
 	body := r.FormValue("body")
-	c.store.CreatePost(posts.Post{Title: title, Body: body})
+	c.store.CreatePost(core.Post{Title: title, Body: body})
 	http.Redirect(w, r, "/posts", http.StatusFound)
 }
 
-func (c *controller) viewHandler(w http.ResponseWriter, r *http.Request) {
+func (c *controller) ViewHandler(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Path[len("/posts/"):])
 	if err != nil {
 		http.NotFound(w, r)
@@ -54,20 +58,4 @@ func (c *controller) viewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	t.Execute(w, post)
-}
-
-type postStore interface {
-	ReadPost(id int) (posts.Post, error)
-	ReadAllPosts() []posts.Post
-	CreatePost(post posts.Post) int
-}
-
-func main() {
-	ctrl := controller{store: posts.NewMemoryStore()}
-
-	http.HandleFunc("/posts", ctrl.handler)
-	http.HandleFunc("/posts/new", ctrl.newHandler)
-	http.HandleFunc("/posts/save", ctrl.saveHandler)
-	http.HandleFunc("/posts/", ctrl.viewHandler)
-	http.ListenAndServe(":8080", nil)
 }
