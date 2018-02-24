@@ -8,7 +8,7 @@ import (
 )
 
 type controller struct {
-	Store postStore
+	store postStore
 }
 
 func (c *controller) handler(w http.ResponseWriter, r *http.Request) {
@@ -17,7 +17,7 @@ func (c *controller) handler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	posts := c.Store.ReadAllPosts()
+	posts := c.store.ReadAllPosts()
 	t.Execute(w, posts)
 }
 
@@ -33,7 +33,7 @@ func (c *controller) newHandler(w http.ResponseWriter, r *http.Request) {
 func (c *controller) saveHandler(w http.ResponseWriter, r *http.Request) {
 	title := r.FormValue("title")
 	body := r.FormValue("body")
-	c.Store.CreatePost(posts.Post{Title: title, Body: body})
+	c.store.CreatePost(posts.Post{Title: title, Body: body})
 	http.Redirect(w, r, "/posts", http.StatusFound)
 }
 
@@ -48,7 +48,7 @@ func (c *controller) viewHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	post, err := c.Store.ReadPost(id)
+	post, err := c.store.ReadPost(id)
 	if err != nil {
 		http.NotFound(w, r)
 		return
@@ -63,7 +63,7 @@ type postStore interface {
 }
 
 func main() {
-	ctrl := controller{Store: posts.NewMemoryStore()}
+	ctrl := controller{store: posts.NewMemoryStore()}
 
 	http.HandleFunc("/posts", ctrl.handler)
 	http.HandleFunc("/posts/new", ctrl.newHandler)
