@@ -1,10 +1,13 @@
 package mem
 
-import "testing"
+import (
+	"github.com/sandfort/goard/core"
+	"testing"
+)
 
 func TestCreateAndReadPost(t *testing.T) {
-	store := NewMemoryStore()
-	id := store.CreatePost(Post{
+	store := NewPostStore()
+	id := store.CreatePost(core.Post{
 		Title: "yo",
 		Body:  "the body of the post",
 	})
@@ -16,9 +19,9 @@ func TestCreateAndReadPost(t *testing.T) {
 }
 
 func TestCreateAndReadMultiplePosts(t *testing.T) {
-	store := NewMemoryStore()
-	id1 := store.CreatePost(Post{Title: "first", Body: "first"})
-	id2 := store.CreatePost(Post{Title: "second", Body: "second"})
+	store := NewPostStore()
+	id1 := store.CreatePost(core.Post{Title: "first", Body: "first"})
+	id2 := store.CreatePost(core.Post{Title: "second", Body: "second"})
 	p1, _ := store.ReadPost(id1)
 	p2, _ := store.ReadPost(id2)
 
@@ -32,7 +35,7 @@ func TestCreateAndReadMultiplePosts(t *testing.T) {
 }
 
 func TestReadReturnsErrorWhenIdDoesNotExist(t *testing.T) {
-	store := NewMemoryStore()
+	store := NewPostStore()
 	_, err := store.ReadPost(1)
 
 	if err == nil {
@@ -41,9 +44,9 @@ func TestReadReturnsErrorWhenIdDoesNotExist(t *testing.T) {
 }
 
 func TestCreateAndReadAllPosts(t *testing.T) {
-	store := NewMemoryStore()
-	store.CreatePost(Post{Title: "first"})
-	store.CreatePost(Post{Title: "second"})
+	store := NewPostStore()
+	store.CreatePost(core.Post{Title: "first"})
+	store.CreatePost(core.Post{Title: "second"})
 	posts := store.ReadAllPosts()
 
 	if len(posts) != 2 {
