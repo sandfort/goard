@@ -16,7 +16,7 @@ type controller struct {
 }
 
 func (c *controller) Handler(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("index.html")
+	t, err := template.ParseFiles("web/index.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -26,7 +26,7 @@ func (c *controller) Handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *controller) NewHandler(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("new.html")
+	t, err := template.ParseFiles("web/new.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -47,7 +47,7 @@ func (c *controller) ViewHandler(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	t, err := template.ParseFiles("view.html")
+	t, err := template.ParseFiles("web/view.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
