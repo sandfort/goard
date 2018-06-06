@@ -25,6 +25,7 @@ module for a database-backed storage module.
 
 ## How to use
 These instructions assume your `pwd` is `$GOPATH/src/github.com/sandfort/goard`.
+Make sure the environment variable `PORT` is set to a number. I use 8080.
 To run tests, run `go test ./...`
 To build, run `go build`
 To start the app, run `./goard` (after building)
