@@ -21,3 +21,10 @@ clear product direction.
 A lot of apps claim to be modular, plug-and-play, etc. My goal with this app is
 to be able to swap out its web layer for an API, and its in-memory storage
 module for a database-backed storage module.
+
+## How to use
+These instructions assume your `pwd` is `$GOPATH/src/github.com/sandfort/goard`.
+To run tests, run `go test ./...`
+To build, run `go build`
+To start the app, run `./goard` (after building)
+To view the app, open a browser to `localhost:8080/posts`
