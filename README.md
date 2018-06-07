@@ -1,5 +1,4 @@
 # goard
-A message goard
 [![Build Status](https://travis-ci.org/sandfort/goard.svg?branch=master)](https://travis-ci.org/sandfort/goard)
 
 ## Three goals of this project
