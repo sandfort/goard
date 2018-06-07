@@ -9,13 +9,13 @@ import (
 )
 
 func main() {
-	ctrl := web.NewPostController(mem.NewPostStore())
+	ctrl := web.NewThreadController(mem.NewThreadStore())
 
 	port := os.Getenv("PORT")
 
-	http.HandleFunc("/posts", ctrl.Handler)
-	http.HandleFunc("/posts/new", ctrl.NewHandler)
-	http.HandleFunc("/posts/save", ctrl.SaveHandler)
-	http.HandleFunc("/posts/", ctrl.ViewHandler)
+	http.HandleFunc("/threads", ctrl.Handler)
+	http.HandleFunc("/threads/new", ctrl.NewHandler)
+	http.HandleFunc("/threads/save", ctrl.SaveHandler)
+	http.HandleFunc("/threads/", ctrl.ViewHandler)
 	http.ListenAndServe(":"+port, nil)
 }

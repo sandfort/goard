@@ -29,4 +29,4 @@ Make sure the environment variable `PORT` is set to a number. I use 8080.
 To run tests, run `go test ./...`
 To build, run `go build`
 To start the app, run `./goard` (after building)
-To view the app, open a browser to `localhost:8080/posts`
+To view the app, open a browser to `localhost:8080/threads`

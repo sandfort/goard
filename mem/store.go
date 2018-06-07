@@ -2,43 +2,44 @@ package mem
 
 import (
 	"errors"
-	"github.com/sandfort/goard/core"
 	"strconv"
+
+	"github.com/sandfort/goard/core"
 )
 
-type PostStore struct {
-	Posts   map[int]core.Post
+type ThreadStore struct {
+	Threads map[int]core.Thread
 	Counter int
 }
 
-func NewPostStore() *PostStore {
-	return &PostStore{Posts: make(map[int]core.Post), Counter: 0}
+func NewThreadStore() *ThreadStore {
+	return &ThreadStore{Threads: make(map[int]core.Thread), Counter: 0}
 }
 
-func (s *PostStore) CreatePost(p core.Post) int {
+func (s *ThreadStore) CreateThread(p core.Thread) int {
 	s.Counter += 1
 	p.Id = s.Counter
-	s.Posts[p.Id] = p
+	s.Threads[p.Id] = p
 	return p.Id
 }
 
-func (s *PostStore) ReadPost(id int) (core.Post, error) {
-	p, ok := s.Posts[id]
+func (s *ThreadStore) ReadThread(id int) (core.Thread, error) {
+	p, ok := s.Threads[id]
 
 	if !ok {
-		return core.Post{},
-			errors.New("No post with ID " + strconv.Itoa(id))
+		return core.Thread{},
+			errors.New("No thread with ID " + strconv.Itoa(id))
 	}
 
 	return p, nil
 }
 
-func (s *PostStore) ReadAllPosts() []core.Post {
-	var posts []core.Post
+func (s *ThreadStore) ReadAllThreads() []core.Thread {
+	var threads []core.Thread
 
-	for _, post := range s.Posts {
-		posts = append(posts, post)
+	for _, thread := range s.Threads {
+		threads = append(threads, thread)
 	}
 
-	return posts
+	return threads
 }

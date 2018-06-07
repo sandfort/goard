@@ -1,18 +1,19 @@
 package web
 
 import (
-	"github.com/sandfort/goard/core"
 	"html/template"
 	"net/http"
 	"strconv"
+
+	"github.com/sandfort/goard/core"
 )
 
-func NewPostController(store core.PostStore) *controller {
+func NewThreadController(store core.ThreadStore) *controller {
 	return &controller{store: store}
 }
 
 type controller struct {
-	store core.PostStore
+	store core.ThreadStore
 }
 
 func (c *controller) Handler(w http.ResponseWriter, r *http.Request) {
@@ -21,8 +22,8 @@ func (c *controller) Handler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	posts := c.store.ReadAllPosts()
-	t.Execute(w, posts)
+	threads := c.store.ReadAllThreads()
+	t.Execute(w, threads)
 }
 
 func (c *controller) NewHandler(w http.ResponseWriter, r *http.Request) {
@@ -37,12 +38,12 @@ func (c *controller) NewHandler(w http.ResponseWriter, r *http.Request) {
 func (c *controller) SaveHandler(w http.ResponseWriter, r *http.Request) {
 	title := r.FormValue("title")
 	body := r.FormValue("body")
-	c.store.CreatePost(core.Post{Title: title, Body: body})
-	http.Redirect(w, r, "/posts", http.StatusFound)
+	c.store.CreateThread(core.Thread{Title: title, Body: body})
+	http.Redirect(w, r, "/threads", http.StatusFound)
 }
 
 func (c *controller) ViewHandler(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.Atoi(r.URL.Path[len("/posts/"):])
+	id, err := strconv.Atoi(r.URL.Path[len("/threads/"):])
 	if err != nil {
 		http.NotFound(w, r)
 		return
@@ -52,10 +53,10 @@ func (c *controller) ViewHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	post, err := c.store.ReadPost(id)
+	thread, err := c.store.ReadThread(id)
 	if err != nil {
 		http.NotFound(w, r)
 		return
 	}
-	t.Execute(w, post)
+	t.Execute(w, thread)
 }

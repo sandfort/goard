@@ -1,29 +1,30 @@
 package mem
 
 import (
-	"github.com/sandfort/goard/core"
 	"testing"
+
+	"github.com/sandfort/goard/core"
 )
 
-func TestCreateAndReadPost(t *testing.T) {
-	store := NewPostStore()
-	id := store.CreatePost(core.Post{
+func TestCreateAndReadThread(t *testing.T) {
+	store := NewThreadStore()
+	id := store.CreateThread(core.Thread{
 		Title: "yo",
-		Body:  "the body of the post",
+		Body:  "the body of the thread",
 	})
-	result, _ := store.ReadPost(id)
+	result, _ := store.ReadThread(id)
 
-	if result.Title != "yo" || result.Body != "the body of the post" {
+	if result.Title != "yo" || result.Body != "the body of the thread" {
 		t.Fail()
 	}
 }
 
-func TestCreateAndReadMultiplePosts(t *testing.T) {
-	store := NewPostStore()
-	id1 := store.CreatePost(core.Post{Title: "first", Body: "first"})
-	id2 := store.CreatePost(core.Post{Title: "second", Body: "second"})
-	p1, _ := store.ReadPost(id1)
-	p2, _ := store.ReadPost(id2)
+func TestCreateAndReadMultipleThreads(t *testing.T) {
+	store := NewThreadStore()
+	id1 := store.CreateThread(core.Thread{Title: "first", Body: "first"})
+	id2 := store.CreateThread(core.Thread{Title: "second", Body: "second"})
+	p1, _ := store.ReadThread(id1)
+	p2, _ := store.ReadThread(id2)
 
 	if p1.Title != "first" {
 		t.Fail()
@@ -35,21 +36,21 @@ func TestCreateAndReadMultiplePosts(t *testing.T) {
 }
 
 func TestReadReturnsErrorWhenIdDoesNotExist(t *testing.T) {
-	store := NewPostStore()
-	_, err := store.ReadPost(1)
+	store := NewThreadStore()
+	_, err := store.ReadThread(1)
 
 	if err == nil {
 		t.Fail()
 	}
 }
 
-func TestCreateAndReadAllPosts(t *testing.T) {
-	store := NewPostStore()
-	store.CreatePost(core.Post{Title: "first"})
-	store.CreatePost(core.Post{Title: "second"})
-	posts := store.ReadAllPosts()
+func TestCreateAndReadAllThreads(t *testing.T) {
+	store := NewThreadStore()
+	store.CreateThread(core.Thread{Title: "first"})
+	store.CreateThread(core.Thread{Title: "second"})
+	threads := store.ReadAllThreads()
 
-	if len(posts) != 2 {
-		t.Errorf("Expected 2 but got %d", len(posts))
+	if len(threads) != 2 {
+		t.Errorf("Expected 2 but got %d", len(threads))
 	}
 }
