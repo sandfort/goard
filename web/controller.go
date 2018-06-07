@@ -38,7 +38,7 @@ func (c *controller) NewHandler(w http.ResponseWriter, r *http.Request) {
 func (c *controller) SaveHandler(w http.ResponseWriter, r *http.Request) {
 	title := r.FormValue("title")
 	body := r.FormValue("body")
-	c.store.CreateThread(core.Thread{Title: title, Body: body})
+	core.PostNewThread(title, body, c.store)
 	http.Redirect(w, r, "/threads", http.StatusFound)
 }
 
