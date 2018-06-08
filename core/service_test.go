@@ -5,7 +5,10 @@ import "testing"
 func TestPostNewThread(t *testing.T) {
 	threadStore := NewThreadMemoryStore()
 
-	PostNewThread("the title", "the body", threadStore)
+	title := "the title"
+	body := "the body"
+
+	PostNewThread(title, body, threadStore)
 
 	threads := threadStore.ReadAllThreads()
 
@@ -15,11 +18,11 @@ func TestPostNewThread(t *testing.T) {
 
 	createdThread := threads[0]
 
-	if createdThread.Title != "the title" {
-		t.Error("Title did not match")
+	if createdThread.Title != title {
+		t.Errorf("Title should have been %q but was %q", title, createdThread.Title)
 	}
 
-	if createdThread.Body != "the body" {
-		t.Error("Body did not match")
+	if createdThread.Body != body {
+		t.Errorf("Body should have been %q but was %q", body, createdThread.Body)
 	}
 }
