@@ -4,12 +4,13 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/sandfort/goard/mem"
+	"github.com/sandfort/goard/core"
 	"github.com/sandfort/goard/web"
 )
 
 func main() {
-	ctrl := web.NewThreadController(mem.NewThreadStore())
+	threadStore := core.NewThreadMemoryStore()
+	ctrl := web.NewThreadController(threadStore)
 
 	port := os.Getenv("PORT")
 

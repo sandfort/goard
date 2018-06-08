@@ -1,14 +1,12 @@
-package mem
+package core
 
 import (
 	"testing"
-
-	"github.com/sandfort/goard/core"
 )
 
 func TestCreateAndReadThread(t *testing.T) {
-	store := NewThreadStore()
-	id := store.CreateThread(core.Thread{
+	store := NewThreadMemoryStore()
+	id := store.CreateThread(Thread{
 		Title: "yo",
 		Body:  "the body of the thread",
 	})
@@ -20,9 +18,9 @@ func TestCreateAndReadThread(t *testing.T) {
 }
 
 func TestCreateAndReadMultipleThreads(t *testing.T) {
-	store := NewThreadStore()
-	id1 := store.CreateThread(core.Thread{Title: "first", Body: "first"})
-	id2 := store.CreateThread(core.Thread{Title: "second", Body: "second"})
+	store := NewThreadMemoryStore()
+	id1 := store.CreateThread(Thread{Title: "first", Body: "first"})
+	id2 := store.CreateThread(Thread{Title: "second", Body: "second"})
 	p1, _ := store.ReadThread(id1)
 	p2, _ := store.ReadThread(id2)
 
@@ -36,7 +34,7 @@ func TestCreateAndReadMultipleThreads(t *testing.T) {
 }
 
 func TestReadReturnsErrorWhenIdDoesNotExist(t *testing.T) {
-	store := NewThreadStore()
+	store := NewThreadMemoryStore()
 	_, err := store.ReadThread(1)
 
 	if err == nil {
@@ -45,9 +43,9 @@ func TestReadReturnsErrorWhenIdDoesNotExist(t *testing.T) {
 }
 
 func TestCreateAndReadAllThreads(t *testing.T) {
-	store := NewThreadStore()
-	store.CreateThread(core.Thread{Title: "first"})
-	store.CreateThread(core.Thread{Title: "second"})
+	store := NewThreadMemoryStore()
+	store.CreateThread(Thread{Title: "first"})
+	store.CreateThread(Thread{Title: "second"})
 	threads := store.ReadAllThreads()
 
 	if len(threads) != 2 {
