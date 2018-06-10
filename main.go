@@ -10,7 +10,8 @@ import (
 
 func main() {
 	threadStore := core.NewThreadMemoryStore()
-	ctrl := web.NewThreadController(threadStore)
+	postStore := core.NewPostMemoryStore()
+	ctrl := web.NewThreadController(threadStore, postStore)
 
 	port := os.Getenv("PORT")
 
