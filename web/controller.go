@@ -39,7 +39,9 @@ func (c *controller) NewHandler(w http.ResponseWriter, r *http.Request) {
 func (c *controller) SaveHandler(w http.ResponseWriter, r *http.Request) {
 	title := r.FormValue("title")
 	body := r.FormValue("body")
+
 	core.PostNewThread(title, body, c.tstore, c.pstore)
+
 	http.Redirect(w, r, "/threads", http.StatusFound)
 }
 
@@ -54,7 +56,9 @@ func (c *controller) ViewHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	thread, err := c.tstore.ReadThread(id)
+
+	thread := core.FetchThreadWithPosts(id, c.tstore, c.pstore)
+
 	if err != nil {
 		http.NotFound(w, r)
 		return

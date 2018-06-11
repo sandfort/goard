@@ -3,7 +3,12 @@ package core
 type Thread struct {
 	Id    int
 	Title string
-	Body  string
+}
+
+type ThreadWithPosts struct {
+	ThreadId int
+	Title    string
+	Posts    []Post
 }
 
 type ThreadStore interface {

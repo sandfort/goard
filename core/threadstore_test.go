@@ -8,19 +8,18 @@ func TestCreateAndReadThread(t *testing.T) {
 	store := NewThreadMemoryStore()
 	id := store.CreateThread(Thread{
 		Title: "yo",
-		Body:  "the body of the thread",
 	})
 	result, _ := store.ReadThread(id)
 
-	if result.Title != "yo" || result.Body != "the body of the thread" {
+	if result.Title != "yo" {
 		t.Fail()
 	}
 }
 
 func TestCreateAndReadMultipleThreads(t *testing.T) {
 	store := NewThreadMemoryStore()
-	id1 := store.CreateThread(Thread{Title: "first", Body: "first"})
-	id2 := store.CreateThread(Thread{Title: "second", Body: "second"})
+	id1 := store.CreateThread(Thread{Title: "first"})
+	id2 := store.CreateThread(Thread{Title: "second"})
 	p1, _ := store.ReadThread(id1)
 	p2, _ := store.ReadThread(id2)
 

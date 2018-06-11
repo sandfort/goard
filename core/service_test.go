@@ -35,3 +35,27 @@ func TestPostNewThread(t *testing.T) {
 		t.Errorf("Body should have been %q but was %q", body, createdPost.Body)
 	}
 }
+
+func TestFetchThreadWithPosts(t *testing.T) {
+	threadStore := NewThreadMemoryStore()
+	postStore := NewPostMemoryStore()
+
+	title := "the title"
+	body := "the body"
+
+	tid := PostNewThread(title, body, threadStore, postStore)
+
+	th := FetchThreadWithPosts(tid, threadStore, postStore)
+
+	if th.ThreadId != tid {
+		t.Errorf("Expected to find thread with id %d but got %d", tid, th.ThreadId)
+	}
+
+	if th.Title != title {
+		t.Errorf("Expected thread to have title %q but got %q", title, th.Title)
+	}
+
+	if len(th.Posts) != 1 {
+		t.Errorf("Expected thread to have 1 post but found %d", len(th.Posts))
+	}
+}
