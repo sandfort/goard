@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Replying</title>
+</head>
+
+<body>
+  <h1>Replying to:</h1>
+  <h2>{{ .Title }}</h2>
+  <form action="/threads/reply/save" method="post">
+    <input type="hidden" name="threadId" value="{{ .ThreadId }}" />
+    <div><textarea name="body"></textarea></div>
+    <div><input type="submit" value="Submit"></input></div>
+  </form>
+</body>
+
+</html>

@@ -19,5 +19,9 @@ func main() {
 	http.HandleFunc("/threads/new", ctrl.NewHandler)
 	http.HandleFunc("/threads/save", ctrl.SaveHandler)
 	http.HandleFunc("/threads/", ctrl.ViewHandler)
+
+	http.HandleFunc("/threads/reply/", ctrl.NewReplyHandler)
+	http.HandleFunc("/threads/reply/save", ctrl.SaveReplyHandler)
+
 	http.ListenAndServe(":"+port, nil)
 }

@@ -70,3 +70,22 @@ func TestFetchThreadWithPostsReturnsErrorWhenThreadDoesNotExist(t *testing.T) {
 		t.Error("Expected method to return error")
 	}
 }
+
+func TestAddReply(t *testing.T) {
+	title := "thread title"
+	post1 := "first post"
+	post2 := "second post"
+
+	tstore := NewThreadMemoryStore()
+	pstore := NewPostMemoryStore()
+
+	tid := PostNewThread(title, post1, tstore, pstore)
+
+	AddReply(tid, post2, pstore)
+
+	th, _ := FetchThreadWithPosts(tid, tstore, pstore)
+
+	if len(th.Posts) != 2 {
+		t.Errorf("Expected thread to have 2 posts but found %d", len(th.Posts))
+	}
+}

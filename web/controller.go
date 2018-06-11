@@ -1,6 +1,7 @@
 package web
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
@@ -64,4 +65,38 @@ func (c *controller) ViewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	t.Execute(w, thread)
+}
+
+func (c *controller) NewReplyHandler(w http.ResponseWriter, r *http.Request) {
+	tid, err := strconv.Atoi(r.URL.Path[len("/threads/reply/"):])
+
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+
+	t, err := template.ParseFiles("web/newreply.html")
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	th, err := core.FetchThreadWithPosts(tid, c.tstore, c.pstore)
+
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+
+	t.Execute(w, th)
+}
+
+func (c *controller) SaveReplyHandler(w http.ResponseWriter, r *http.Request) {
+	tid, _ := strconv.Atoi(r.FormValue("threadId"))
+	body := r.FormValue("body")
+
+	core.AddReply(tid, body, c.pstore)
+
+	http.Redirect(w, r, fmt.Sprintf("/threads/%d", tid), http.StatusFound)
 }

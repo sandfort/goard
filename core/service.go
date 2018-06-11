@@ -19,3 +19,7 @@ func FetchThreadWithPosts(id int, tstore ThreadStore, pstore PostStore) (ThreadW
 	ps := pstore.ReadByThreadId(id)
 	return ThreadWithPosts{ThreadId: t.Id, Title: t.Title, Posts: ps}, nil
 }
+
+func AddReply(tid int, body string, pstore PostStore) {
+	pstore.CreatePost(Post{ThreadId: tid, Body: body})
+}
