@@ -9,8 +9,13 @@ func PostNewThread(title string, body string, tstore ThreadStore, pstore PostSto
 }
 
 // FetchThreadWithPosts returns a thread and all posts associated with it.
-func FetchThreadWithPosts(id int, tstore ThreadStore, pstore PostStore) ThreadWithPosts {
-	t, _ := tstore.ReadThread(id)
+func FetchThreadWithPosts(id int, tstore ThreadStore, pstore PostStore) (ThreadWithPosts, error) {
+	t, err := tstore.ReadThread(id)
+
+	if err != nil {
+		return ThreadWithPosts{}, err
+	}
+
 	ps := pstore.ReadByThreadId(id)
-	return ThreadWithPosts{ThreadId: t.Id, Title: t.Title, Posts: ps}
+	return ThreadWithPosts{ThreadId: t.Id, Title: t.Title, Posts: ps}, nil
 }

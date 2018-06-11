@@ -45,7 +45,7 @@ func TestFetchThreadWithPosts(t *testing.T) {
 
 	tid := PostNewThread(title, body, threadStore, postStore)
 
-	th := FetchThreadWithPosts(tid, threadStore, postStore)
+	th, _ := FetchThreadWithPosts(tid, threadStore, postStore)
 
 	if th.ThreadId != tid {
 		t.Errorf("Expected to find thread with id %d but got %d", tid, th.ThreadId)
@@ -57,5 +57,16 @@ func TestFetchThreadWithPosts(t *testing.T) {
 
 	if len(th.Posts) != 1 {
 		t.Errorf("Expected thread to have 1 post but found %d", len(th.Posts))
+	}
+}
+
+func TestFetchThreadWithPostsReturnsErrorWhenThreadDoesNotExist(t *testing.T) {
+	threadStore := NewThreadMemoryStore()
+	postStore := NewPostMemoryStore()
+
+	_, err := FetchThreadWithPosts(1, threadStore, postStore)
+
+	if err == nil {
+		t.Error("Expected method to return error")
 	}
 }

@@ -57,7 +57,7 @@ func (c *controller) ViewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	thread := core.FetchThreadWithPosts(id, c.tstore, c.pstore)
+	thread, err := core.FetchThreadWithPosts(id, c.tstore, c.pstore)
 
 	if err != nil {
 		http.NotFound(w, r)
