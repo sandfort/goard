@@ -40,8 +40,9 @@ func (c *controller) NewHandler(w http.ResponseWriter, r *http.Request) {
 func (c *controller) SaveHandler(w http.ResponseWriter, r *http.Request) {
 	title := r.FormValue("title")
 	body := r.FormValue("body")
+	author := r.FormValue("author")
 
-	core.PostNewThread(title, body, c.tstore, c.pstore)
+	core.PostNewThread(title, body, author, c.tstore, c.pstore)
 
 	http.Redirect(w, r, "/threads", http.StatusFound)
 }
@@ -95,8 +96,9 @@ func (c *controller) NewReplyHandler(w http.ResponseWriter, r *http.Request) {
 func (c *controller) SaveReplyHandler(w http.ResponseWriter, r *http.Request) {
 	tid, _ := strconv.Atoi(r.FormValue("threadId"))
 	body := r.FormValue("body")
+	author := r.FormValue("author")
 
-	core.AddReply(tid, body, c.pstore)
+	core.AddReply(tid, body, author, c.pstore)
 
 	http.Redirect(w, r, fmt.Sprintf("/threads/%d", tid), http.StatusFound)
 }

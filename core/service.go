@@ -1,9 +1,9 @@
 package core
 
 // PostNewThread posts a new thread with the given title and body to store, returning its ID.
-func PostNewThread(title string, body string, tstore ThreadStore, pstore PostStore) int {
+func PostNewThread(title string, body string, author string, tstore ThreadStore, pstore PostStore) int {
 	tid := tstore.CreateThread(Thread{Title: title})
-	pstore.CreatePost(Post{Body: body, ThreadId: tid})
+	pstore.CreatePost(Post{Body: body, Author: author, ThreadId: tid})
 
 	return tid
 }
@@ -20,6 +20,6 @@ func FetchThreadWithPosts(id int, tstore ThreadStore, pstore PostStore) (ThreadW
 	return ThreadWithPosts{ThreadId: t.Id, Title: t.Title, Posts: ps}, nil
 }
 
-func AddReply(tid int, body string, pstore PostStore) {
-	pstore.CreatePost(Post{ThreadId: tid, Body: body})
+func AddReply(tid int, body string, author string, pstore PostStore) {
+	pstore.CreatePost(Post{ThreadId: tid, Body: body, Author: author})
 }

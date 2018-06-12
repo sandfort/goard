@@ -4,6 +4,7 @@ type Post struct {
 	Id       int
 	ThreadId int
 	Body     string
+	Author   string
 }
 
 type PostStore interface {

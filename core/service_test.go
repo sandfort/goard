@@ -8,8 +8,9 @@ func TestPostNewThread(t *testing.T) {
 
 	title := "the title"
 	body := "the body"
+	author := "the author"
 
-	PostNewThread(title, body, threadStore, postStore)
+	PostNewThread(title, body, author, threadStore, postStore)
 
 	threads := threadStore.ReadAllThreads()
 
@@ -34,6 +35,10 @@ func TestPostNewThread(t *testing.T) {
 	if createdPost.Body != body {
 		t.Errorf("Body should have been %q but was %q", body, createdPost.Body)
 	}
+
+	if createdPost.Author != author {
+		t.Errorf("Author should have been %q but was %q", author, createdPost.Author)
+	}
 }
 
 func TestFetchThreadWithPosts(t *testing.T) {
@@ -42,8 +47,9 @@ func TestFetchThreadWithPosts(t *testing.T) {
 
 	title := "the title"
 	body := "the body"
+	author := "the author"
 
-	tid := PostNewThread(title, body, threadStore, postStore)
+	tid := PostNewThread(title, body, author, threadStore, postStore)
 
 	th, _ := FetchThreadWithPosts(tid, threadStore, postStore)
 
@@ -75,17 +81,24 @@ func TestAddReply(t *testing.T) {
 	title := "thread title"
 	post1 := "first post"
 	post2 := "second post"
+	author := "the author"
 
 	tstore := NewThreadMemoryStore()
 	pstore := NewPostMemoryStore()
 
-	tid := PostNewThread(title, post1, tstore, pstore)
+	tid := PostNewThread(title, post1, author, tstore, pstore)
 
-	AddReply(tid, post2, pstore)
+	AddReply(tid, post2, author, pstore)
 
 	th, _ := FetchThreadWithPosts(tid, tstore, pstore)
 
 	if len(th.Posts) != 2 {
 		t.Errorf("Expected thread to have 2 posts but found %d", len(th.Posts))
+	}
+
+	for _, p := range th.Posts {
+		if p.Author != author {
+			t.Errorf("Expected post to have author %q but was %q", author, p.Author)
+		}
 	}
 }

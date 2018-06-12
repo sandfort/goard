@@ -7,11 +7,13 @@
 
 <body>
   <h1>{{ .Title }}</h1>
+  <ul>
   {{ range $index, $element := .Posts }}
-  <p>{{ $element.Body }}</p>
+  <li><strong>{{ $element.Author }}:</strong> {{ $element.Body }}</li>
   {{ else }}
-  <p>no posts</p>
+  <li>no posts</li>
   {{ end }}
+  </ul>
   <a href="/threads">Back</a>
   <a href="/threads/reply/{{ .ThreadId }}">Reply</a>
 </body>
