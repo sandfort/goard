@@ -5,12 +5,13 @@ import "testing"
 func TestPostNewThread(t *testing.T) {
 	threadStore := NewThreadMemoryStore()
 	postStore := NewPostMemoryStore()
+	stamper := NewIncrementingStamper()
 
 	title := "the title"
 	body := "the body"
 	author := "the author"
 
-	PostNewThread(title, body, author, threadStore, postStore)
+	PostNewThread(title, body, author, stamper, threadStore, postStore)
 
 	threads := threadStore.ReadAllThreads()
 
@@ -44,12 +45,13 @@ func TestPostNewThread(t *testing.T) {
 func TestFetchThreadWithPosts(t *testing.T) {
 	threadStore := NewThreadMemoryStore()
 	postStore := NewPostMemoryStore()
+	stamper := NewIncrementingStamper()
 
 	title := "the title"
 	body := "the body"
 	author := "the author"
 
-	tid := PostNewThread(title, body, author, threadStore, postStore)
+	tid := PostNewThread(title, body, author, stamper, threadStore, postStore)
 
 	th, _ := FetchThreadWithPosts(tid, threadStore, postStore)
 
@@ -77,6 +79,42 @@ func TestFetchThreadWithPostsReturnsErrorWhenThreadDoesNotExist(t *testing.T) {
 	}
 }
 
+func TestFetchThreadWithPostsReturnsPostsInOrder(t *testing.T) {
+	threadStore := NewThreadMemoryStore()
+	postStore := NewPostMemoryStore()
+	stamper := NewIncrementingStamper()
+
+	title := "thread title"
+	author := "author"
+	body1 := "first post"
+	body2 := "second post"
+	body3 := "third post"
+	body4 := "fourth post"
+
+	tid := PostNewThread(title, body1, author, stamper, threadStore, postStore)
+	AddReply(tid, body2, author, stamper, postStore)
+	AddReply(tid, body3, author, stamper, postStore)
+	AddReply(tid, body4, author, stamper, postStore)
+
+	th, _ := FetchThreadWithPosts(tid, threadStore, postStore)
+
+	if th.Posts[0].Body != body1 {
+		t.Errorf("Expected first post body to be %q but was %q", body1, th.Posts[0].Body)
+	}
+
+	if th.Posts[1].Body != body2 {
+		t.Errorf("Expected second post body to be %q but was %q", body2, th.Posts[1].Body)
+	}
+
+	if th.Posts[2].Body != body3 {
+		t.Errorf("Expected third post body to be %q but was %q", body3, th.Posts[2].Body)
+	}
+
+	if th.Posts[3].Body != body4 {
+		t.Errorf("Expected fourth post body to be %q but was %q", body4, th.Posts[3].Body)
+	}
+}
+
 func TestAddReply(t *testing.T) {
 	title := "thread title"
 	post1 := "first post"
@@ -85,10 +123,11 @@ func TestAddReply(t *testing.T) {
 
 	tstore := NewThreadMemoryStore()
 	pstore := NewPostMemoryStore()
+	stamper := NewIncrementingStamper()
 
-	tid := PostNewThread(title, post1, author, tstore, pstore)
+	tid := PostNewThread(title, post1, author, stamper, tstore, pstore)
 
-	AddReply(tid, post2, author, pstore)
+	AddReply(tid, post2, author, stamper, pstore)
 
 	th, _ := FetchThreadWithPosts(tid, tstore, pstore)
 

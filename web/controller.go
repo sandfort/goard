@@ -9,13 +9,15 @@ import (
 	"github.com/sandfort/goard/core"
 )
 
-func NewThreadController(tstore core.ThreadStore, pstore core.PostStore) *controller {
-	return &controller{tstore: tstore, pstore: pstore}
+// NewThreadController constructs a controller that handles thread requests.
+func NewThreadController(stamper core.Stamper, tstore core.ThreadStore, pstore core.PostStore) *controller {
+	return &controller{stamper: stamper, tstore: tstore, pstore: pstore}
 }
 
 type controller struct {
-	tstore core.ThreadStore
-	pstore core.PostStore
+	stamper core.Stamper
+	tstore  core.ThreadStore
+	pstore  core.PostStore
 }
 
 func (c *controller) Handler(w http.ResponseWriter, r *http.Request) {
@@ -42,7 +44,7 @@ func (c *controller) SaveHandler(w http.ResponseWriter, r *http.Request) {
 	body := r.FormValue("body")
 	author := r.FormValue("author")
 
-	core.PostNewThread(title, body, author, c.tstore, c.pstore)
+	core.PostNewThread(title, body, author, c.stamper, c.tstore, c.pstore)
 
 	http.Redirect(w, r, "/threads", http.StatusFound)
 }
@@ -94,11 +96,16 @@ func (c *controller) NewReplyHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *controller) SaveReplyHandler(w http.ResponseWriter, r *http.Request) {
-	tid, _ := strconv.Atoi(r.FormValue("threadId"))
+	tid, err := strconv.Atoi(r.FormValue("threadId"))
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
 	body := r.FormValue("body")
 	author := r.FormValue("author")
 
-	core.AddReply(tid, body, author, c.pstore)
+	core.AddReply(tid, body, author, c.stamper, c.pstore)
 
 	http.Redirect(w, r, fmt.Sprintf("/threads/%d", tid), http.StatusFound)
 }

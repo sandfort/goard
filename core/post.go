@@ -5,6 +5,7 @@ type Post struct {
 	ThreadId int
 	Body     string
 	Author   string
+	Stamp    int
 }
 
 type PostStore interface {

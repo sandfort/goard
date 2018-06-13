@@ -15,7 +15,7 @@ func NewThreadMemoryStore() *ThreadMemoryStore {
 }
 
 func (s *ThreadMemoryStore) CreateThread(p Thread) int {
-	s.Counter += 1
+	s.Counter++
 	p.Id = s.Counter
 	s.Threads[p.Id] = p
 	return p.Id
