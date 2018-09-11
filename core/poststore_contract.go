@@ -11,13 +11,21 @@ type fixture struct {
 }
 
 type PostStoreContract interface {
-	CreateAndReadPostContract(t *testing.T)
-	CreateAndReadMultiplePostsContract(t *testing.T)
-	ReadPostReturnsErrorWhenIdDoesNotExistContract(t *testing.T)
-	ReadByThreadIdContract(t *testing.T)
+	Verify(t *testing.T)
+	createAndReadPostContract(t *testing.T)
+	createAndReadMultiplePostsContract(t *testing.T)
+	readPostReturnsErrorWhenIdDoesNotExistContract(t *testing.T)
+	readByThreadIdContract(t *testing.T)
 }
 
-func (f *fixture) CreateAndReadPostContract(t *testing.T) {
+func (f *fixture) Verify(t *testing.T) {
+	f.createAndReadPostContract(t)
+	f.createAndReadMultiplePostsContract(t)
+	f.readPostReturnsErrorWhenIdDoesNotExistContract(t)
+	f.readByThreadIdContract(t)
+}
+
+func (f *fixture) createAndReadPostContract(t *testing.T) {
 	body := "The Body"
 	id := f.store.CreatePost(Post{Body: body})
 	result, _ := f.store.ReadPost(id)
@@ -26,7 +34,7 @@ func (f *fixture) CreateAndReadPostContract(t *testing.T) {
 	}
 }
 
-func (f *fixture) CreateAndReadMultiplePostsContract(t *testing.T) {
+func (f *fixture) createAndReadMultiplePostsContract(t *testing.T) {
 	body1 := "first"
 	body2 := "second"
 
@@ -45,15 +53,15 @@ func (f *fixture) CreateAndReadMultiplePostsContract(t *testing.T) {
 	}
 }
 
-func (f *fixture) ReadPostReturnsErrorWhenIdDoesNotExistContract(t *testing.T) {
-	_, err := f.store.ReadPost(1)
+func (f *fixture) readPostReturnsErrorWhenIdDoesNotExistContract(t *testing.T) {
+	_, err := f.store.ReadPost(99)
 
 	if err == nil {
 		t.Error("Expected error")
 	}
 }
 
-func (f *fixture) ReadByThreadIdContract(t *testing.T) {
+func (f *fixture) readByThreadIdContract(t *testing.T) {
 	id := f.store.CreatePost(Post{ThreadId: 1})
 	f.store.CreatePost(Post{ThreadId: 2})
 	f.store.CreatePost(Post{ThreadId: 2})
