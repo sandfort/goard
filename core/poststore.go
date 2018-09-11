@@ -9,7 +9,7 @@ type PostMemoryStore struct {
 	Counter int
 }
 
-func NewPostMemoryStore() *PostMemoryStore {
+func NewPostMemoryStore() PostStore {
 	return &PostMemoryStore{Posts: make(map[int]Post), Counter: 0}
 }
 
