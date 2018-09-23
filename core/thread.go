@@ -15,4 +15,5 @@ type ThreadStore interface {
 	ReadThread(id int) (Thread, error)
 	ReadAllThreads() []Thread
 	CreateThread(thread Thread) int
+	DeleteThread(id int)
 }

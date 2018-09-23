@@ -41,3 +41,7 @@ func (s *ThreadMemoryStore) ReadAllThreads() []Thread {
 
 	return threads
 }
+
+func (s *ThreadMemoryStore) DeleteThread(id int) {
+	delete(s.Threads, id)
+}
