@@ -62,9 +62,9 @@ func (f *fixture) readPostReturnsErrorWhenIdDoesNotExistContract(t *testing.T) {
 }
 
 func (f *fixture) readByThreadIdContract(t *testing.T) {
-	id := f.store.CreatePost(Post{ThreadId: 1})
-	f.store.CreatePost(Post{ThreadId: 2})
-	f.store.CreatePost(Post{ThreadId: 2})
+	id := f.store.CreatePost(Post{ThreadID: 1})
+	f.store.CreatePost(Post{ThreadID: 2})
+	f.store.CreatePost(Post{ThreadID: 2})
 
 	t1Posts := f.store.ReadByThreadId(1)
 
@@ -72,7 +72,7 @@ func (f *fixture) readByThreadIdContract(t *testing.T) {
 		t.Errorf("Expected thread to have 1 post but found %d", len(t1Posts))
 	}
 
-	if t1Posts[0].Id != id {
-		t.Errorf("Expected to find post with ID %d but found ID %d", id, t1Posts[0].Id)
+	if t1Posts[0].ID != id {
+		t.Errorf("Expected to find post with ID %d but found ID %d", id, t1Posts[0].ID)
 	}
 }
