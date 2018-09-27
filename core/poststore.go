@@ -15,9 +15,9 @@ func NewPostMemoryStore() PostStore {
 
 func (s *PostMemoryStore) CreatePost(post Post) int {
 	s.Counter += 1
-	post.ID = s.Counter
-	s.Posts[post.ID] = post
-	return post.ID
+	post.Id = s.Counter
+	s.Posts[post.Id] = post
+	return post.Id
 }
 
 func (s *PostMemoryStore) ReadPost(id int) (Post, error) {
@@ -34,7 +34,7 @@ func (s *PostMemoryStore) ReadByThreadId(tid int) []Post {
 	var ps []Post
 
 	for _, p := range s.Posts {
-		if p.ThreadID == tid {
+		if p.ThreadId == tid {
 			ps = append(ps, p)
 		}
 	}

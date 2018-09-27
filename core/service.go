@@ -7,7 +7,7 @@ import (
 // PostNewThread posts a new thread with the given title and body to store, returning its ID.
 func PostNewThread(title string, body string, author string, stamper Stamper, tstore ThreadStore, pstore PostStore) int {
 	tid := tstore.CreateThread(Thread{Title: title})
-	pstore.CreatePost(Post{Body: body, Author: author, ThreadID: tid, Stamp: stamper.Stamp()})
+	pstore.CreatePost(Post{Body: body, Author: author, ThreadId: tid, Stamp: stamper.Stamp()})
 
 	return tid
 }
@@ -31,5 +31,5 @@ func FetchThreadWithPosts(id int, tstore ThreadStore, pstore PostStore) (ThreadW
 
 // AddReply saves a new reply to the thread with the given ID.
 func AddReply(tid int, body string, author string, stamper Stamper, pstore PostStore) {
-	pstore.CreatePost(Post{ThreadID: tid, Body: body, Author: author, Stamp: stamper.Stamp()})
+	pstore.CreatePost(Post{ThreadId: tid, Body: body, Author: author, Stamp: stamper.Stamp()})
 }
