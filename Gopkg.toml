@@ -1,2 +1,6 @@
 [metadata.heroku]
     root-package = "github.com/sandfort/goard"
+
+[[constraint]]
+  name = "github.com/go-sql-driver/mysql"
+  version = "1.4.0"

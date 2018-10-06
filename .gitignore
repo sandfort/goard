@@ -15,3 +15,11 @@
 
 # Project binary
 goard
+
+# Project dependencies
+vendor/
+
+# Project secrets
+flyway.conf
+flyway.test.conf
+env

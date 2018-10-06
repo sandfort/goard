@@ -32,7 +32,7 @@ func (f *threadStoreFixture) createAndReadThread(t *testing.T) {
 	result, _ := f.store.ReadThread(id)
 
 	if result.Title != "yo" {
-		t.Fail()
+		t.Errorf("Expected title to be \"yo\" but was %s", result.Title)
 	}
 
 	f.store.DeleteThread(id)
@@ -45,11 +45,11 @@ func (f *threadStoreFixture) createAndReadMultipleThreads(t *testing.T) {
 	p2, _ := f.store.ReadThread(id2)
 
 	if p1.Title != "first" {
-		t.Fail()
+		t.Errorf("Expected title to be \"first\" but was %s", p1.Title)
 	}
 
 	if p2.Title != "second" {
-		t.Fail()
+		t.Errorf("Expected title to be \"second\" but was %s", p2.Title)
 	}
 
 	f.store.DeleteThread(id1)
@@ -60,7 +60,7 @@ func (f *threadStoreFixture) readReturnsErrorWhenIdDoesNotExist(t *testing.T) {
 	_, err := f.store.ReadThread(1)
 
 	if err == nil {
-		t.Fail()
+		t.Error("Expected error")
 	}
 }
 

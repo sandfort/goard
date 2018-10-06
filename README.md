@@ -34,3 +34,26 @@ To build, run `go build`
 To start the app, run `./goard` (after building)
 
 To view the app, open a browser to `localhost:8080/threads`
+
+## The `db` package
+The database package requires a running SQL database server. I have only tested
+with MySQL 8.0, but others may work. The package also includes migrations
+intended for use with Flyway.
+
+### Migrations
+Running the migrations requires the Flyway CLI. I have tested with Flyway
+Community Edition 5.2.0. To run the migrations, you'll need to give Flyway the
+credentials for your database. This can be done by command-line arguments,
+config files, or by environment variables. I have provided an example Flyway
+configuration file that you can fill in with your own credentials. When you
+have all that sorted, you can run `flyway migrate` and you should be set.
+
+### Testing
+Similarly, credentials will have to be provided to the `db` package to run
+the tests. I recommend having a separate test database (and yes, this means
+you would have to manage those credentials for migrations as well). The tests
+rely on their own set of credentials which must be provided via the following
+environment variables:
+- `TEST_DB_USER`
+- `TEST_DB_PASSWORD`
+- `TEST_DB_NAME`
