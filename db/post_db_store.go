@@ -2,7 +2,6 @@ package db
 
 import (
 	"database/sql"
-	"log"
 
 	"github.com/sandfort/goard/core"
 )
@@ -16,12 +15,9 @@ func NewPostDbStore(db *sql.DB) core.PostStore {
 }
 
 func (store *PostDbStore) CreatePost(post core.Post) int {
-	result, err := store.db.Exec("insert into post (thread_id, body, author, stamp) values (?, ?, ?, ?)",
+	result, _ := store.db.Exec("insert into post (thread_id, body, author, stamp) values (?, ?, ?, ?)",
 		post.ThreadId, post.Body, post.Author, post.Stamp)
-	if err != nil {
-		log.Fatal(err)
-	}
-	id, err := result.LastInsertId()
+	id, _ := result.LastInsertId()
 	return int(id)
 }
 
