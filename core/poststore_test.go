@@ -3,7 +3,8 @@ package core
 import "testing"
 
 func TestPostStoreContract(t *testing.T) {
-	store := NewPostMemoryStore()
-	contract := NewPostStoreContract(store)
+	postStore := NewPostMemoryStore()
+	threadStore := NewThreadMemoryStore()
+	contract := NewPostStoreContract(postStore, threadStore)
 	contract.Verify(t)
 }

@@ -41,3 +41,7 @@ func (s *PostMemoryStore) ReadByThreadId(tid int) []Post {
 
 	return ps
 }
+
+func (s *PostMemoryStore) DeletePost(id int) {
+	delete(s.Posts, id)
+}
