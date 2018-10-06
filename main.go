@@ -20,6 +20,7 @@ func main() {
 
 	flag.Parse()
 
+	var stamper core.Stamper
 	var threadStore core.ThreadStore
 	var postStore core.PostStore
 
@@ -42,7 +43,7 @@ func main() {
 		postStore = core.NewPostMemoryStore()
 	}
 
-	stamper := core.NewIncrementingStamper()
+	stamper = core.NewTimeStamper()
 
 	ctrl := web.NewThreadController(stamper, threadStore, postStore)
 

@@ -1,5 +1,9 @@
 package core
 
+import (
+	"time"
+)
+
 type Stamper interface {
 	Stamp() int
 }
@@ -16,4 +20,15 @@ type IncrementingStamper struct {
 func (s *IncrementingStamper) Stamp() int {
 	s.Count++
 	return s.Count
+}
+
+func NewTimeStamper() Stamper {
+	return &TimeStamper{}
+}
+
+type TimeStamper struct{}
+
+// Stamp returns the current Unix timestamp in seconds.
+func (s *TimeStamper) Stamp() int {
+	return int(time.Now().Unix())
 }
