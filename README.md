@@ -40,6 +40,13 @@ The database package requires a running SQL database server. I have only tested
 with MySQL 8.0, but others may work. The package also includes migrations
 intended for use with Flyway.
 
+The database can be used by adding the `-db` flag when running the app.
+Otherwise it will default to in-memory storage. Using this option requires the
+following environment variables to be set:
+- `DB_USER`
+- `DB_PASSWORD`
+- `DB_NAME`
+
 ### Migrations
 Running the migrations requires the Flyway CLI. I have tested with Flyway
 Community Edition 5.2.0. To run the migrations, you'll need to give Flyway the
