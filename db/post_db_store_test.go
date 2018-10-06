@@ -7,6 +7,8 @@ import (
 	"testing"
 
 	"github.com/sandfort/goard/core"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func TestPostStoreContract(t *testing.T) {

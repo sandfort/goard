@@ -1,16 +1,46 @@
 package main
 
 import (
+	"database/sql"
+	"flag"
+	"fmt"
+	"log"
 	"net/http"
 	"os"
 
 	"github.com/sandfort/goard/core"
+	"github.com/sandfort/goard/db"
 	"github.com/sandfort/goard/web"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
-	threadStore := core.NewThreadMemoryStore()
-	postStore := core.NewPostMemoryStore()
+	dbFlag := flag.Bool("db", false, "Use database-backed storage")
+
+	flag.Parse()
+
+	var threadStore core.ThreadStore
+	var postStore core.PostStore
+
+	if *dbFlag {
+		dbUser := os.Getenv("DB_USER")
+		dbPassword := os.Getenv("DB_PASSWORD")
+		dbName := os.Getenv("DB_NAME")
+
+		dsn := fmt.Sprintf("%s:%s@/%s", dbUser, dbPassword, dbName)
+		dbconn, err := sql.Open("mysql", dsn)
+
+		if err != nil {
+			log.Fatal("Failed to open a database connection", err)
+		}
+
+		threadStore = db.NewThreadDbStore(dbconn)
+		postStore = db.NewPostDbStore(dbconn)
+	} else {
+		threadStore = core.NewThreadMemoryStore()
+		postStore = core.NewPostMemoryStore()
+	}
 
 	stamper := core.NewIncrementingStamper()
 
